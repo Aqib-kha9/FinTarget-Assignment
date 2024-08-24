@@ -26,26 +26,26 @@ Resources references
 
 Explanation of the Code
 
-Cluster Setup:
-The Primary process forks two worker processes (replicas) to handle incoming requests. Each worker is essentially a clone that can handle requests independently.
+1. Cluster Setup:
+   The Primary process forks two worker processes (replicas) to handle incoming requests. Each worker is essentially a clone that can handle requests independently.
 
-Rate Limiting:
-We use the express-rate-limit package to enforce a maximum of 20 tasks per minute per user.
-Additional logic in the route handler enforces 1 task per second processing for each user.
+2. Rate Limiting:
+   We use the express-rate-limit package to enforce a maximum of 20 tasks per minute per user.
+   Additional logic in the route handler enforces 1 task per second processing for each user.
 
-Queueing System:
-We use a Map to maintain queues for each user, where each user ID maps to an array of tasks.
-A Set keeps track of which users are currently having their tasks processed to prevent duplicate processing.
+3. Queueing System:
+   We use a Map to maintain queues for each user, where each user ID maps to an array of tasks.
+   A Set keeps track of which users are currently having their tasks processed to prevent duplicate processing.
 
-Task Processing:
-The processUserQueue function processes tasks from each user’s queue at a rate of 1 task per second.
-It recursively calls itself to process the next task after a 1-second delay.
+4. Task Processing:
+   The processUserQueue function processes tasks from each user’s queue at a rate of 1 task per second.
+   It recursively calls itself to process the next task after a 1-second delay.
 
-Logging:
-Each task completion is logged to a file named task-log.txt.
+5. Logging:
+   Each task completion is logged to a file named task-log.txt.
 
-Resilience:
-The Primary process listens for any worker exits (failures) and automatically restarts the worker to maintain service availability.
+6. Resilience:
+   The Primary process listens for any worker exits (failures) and automatically restarts the worker to maintain service availability.
 
 
    
